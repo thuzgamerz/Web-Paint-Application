@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CanvasPro Studio - Modern Web Paint & Image Editor</title>
+  <meta name="description" content="A powerful, modern, responsive web-based paint and image editor with layers, filters, vector shapes, stickers, text overlays, and intuitive tools.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="app-container">
+    <!-- Top Navigation Header -->
+    <header id="header-bar">
+      <div class="header-left">
+        <div class="brand-badge">
+          <div class="brand-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m12 19 7-7 3 3-7 7-3-3z"></path>
+              <path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+              <path d="m2 2 7.586 7.586"></path>
+              <circle cx="11" cy="11" r="2"></circle>
+            </svg>
+          </div>
+          <span class="brand-title">CanvasPro</span>
+        </div>
+
+        <!-- Menubar Dropdowns -->
+        <nav class="menu-bar">
+          <!-- File Menu -->
+          <div class="menu-item" id="menu-file-item">
+            <button class="menu-btn" id="menu-file-btn">File</button>
+            <div class="dropdown-menu" id="dropdown-file">
+              <button class="dropdown-item" id="btn-menu-new">
+                <span class="item-left">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                  New Canvas...
+                </span>
+                <span class="item-shortcut">Ctrl+N</span>
+              </button>
+              <button class="dropdown-item" id="btn-menu-open">
+                <span class="item-left">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"></path></svg>
+                  Open Image...
+                </span>
+                <span class="item-shortcut">Ctrl+O</span>
+              </button>
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item" id="btn-menu-export-png">
+                <span class="item-left">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  Export as PNG
+                </span>
+                <span class="item-shortcut">Ctrl+S</span>
+              </button>
+              <button class="dropdown-item" id="btn-menu-export-jpg">
+                <span class="item-left">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  Export as JPEG
+                </span>
+              </button>
+              <button class="dropdown-item" id="btn-menu-copy-clipboard">
+                <span class="item-left">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                  Copy to Clipboard
+                </span>
+              </button>
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item danger" id="btn-menu-clear">
+                <span class="item-left">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                  Clear Canvas
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Edit Menu -->
+          <div class="menu-item" id="menu-edit-item">
+            <button class="menu-btn" id="menu-edit-btn">Edit</button>
+            <div class="dropdown-menu" id="dropdown-edit">
+              <button class="dropdown-item" id="btn-menu-undo">
+                <span class="item-left">Undo</span>
+                <span class="item-shortcut">Ctrl+Z</span>
+              </button>
+              <button class="dropdown-item" id="btn-menu-redo">
+                <span class="item-left">Redo</span>
+                <span class="item-shortcut">Ctrl+Y</span>
+              </button>
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item" id="btn-menu-delete-selected">
+                <span class="item-left">Delete Selection</span>
+                <span class="item-shortcut">Del</span>
+              </button>
+              <button class="dropdown-item" id="btn-menu-duplicate-selected">
+                <span class="item-left">Duplicate Element</span>
+                <span class="item-shortcut">Ctrl+D</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Image Menu -->
+          <div class="menu-item" id="menu-image-item">
+            <button class="menu-btn" id="menu-image-btn">Image</button>
+            <div class="dropdown-menu" id="dropdown-image">
+              <button class="dropdown-item" id="btn-menu-resize">
+                <span class="item-left">Resize Canvas...</span>
+              </button>
+              <button class="dropdown-item" id="btn-menu-crop">
+                <span class="item-left">Crop Canvas</span>
+                <span class="item-shortcut">C</span>
+              </button>
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item" id="btn-menu-rot-cw">
+                <span class="item-left">Rotate 90° CW</span>
+              </button>
+              <button class="dropdown-item" id="btn-menu-rot-ccw">
+                <span class="item-left">Rotate 90° CCW</span>
+              </button>
+              <button class="dropdown-item" id="btn-menu-rot-180">
+                <span class="item-left">Rotate 180°</span>
+              </button>
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item" id="btn-menu-flip-h">
+                <span class="item-left">Flip Horizontal</span>
+              </button>
+              <button class="dropdown-item" id="btn-menu-flip-v">
+                <span class="item-left">Flip Vertical</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Help Menu -->
+          <div class="menu-item" id="menu-help-item">
+            <button class="menu-btn" id="menu-help-btn">Help</button>
+            <div class="dropdown-menu" id="dropdown-help">
+              <button class="dropdown-item" id="btn-menu-shortcuts">
+                <span class="item-left">Keyboard Shortcuts</span>
+                <span class="item-shortcut">?</span>
+              </button>
+              <button class="dropdown-item" id="btn-menu-about">
+                <span class="item-left">About CanvasPro</span>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Center Title Input -->
+      <div class="header-center">
+        <input type="text" id="document-title" class="doc-title-input" value="Untitled Artwork" spellcheck="false" title="Click to rename document">
+      </div>
+
+      <!-- Right Header Actions -->
+      <div class="header-right">
+        <!-- Quick Undo/Redo Buttons -->
+        <button class="icon-btn" id="btn-quick-undo" data-tooltip="Undo (Ctrl+Z)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v6h6"></path><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path></svg>
+        </button>
+        <button class="icon-btn" id="btn-quick-redo" data-tooltip="Redo (Ctrl+Y)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 7v6h-6"></path><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7"></path></svg>
+        </button>
+
+        <div class="prop-divider"></div>
+
+        <!-- Add Image Button -->
+        <button class="btn-secondary" id="btn-add-image" data-tooltip="Upload Image (PNG, JPG, WebP)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+          Add Image
+        </button>
+
+        <!-- Theme Toggle -->
+        <button class="icon-btn" id="btn-theme-toggle" data-tooltip="Toggle Dark/Light Mode">
+          <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        </button>
+
+        <!-- Export Dropdown Button -->
+        <button class="btn-primary" id="btn-export-main" data-tooltip="Export Artwork">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export
+        </button>
+      </div>
+    </header>
+
+    <!-- Contextual Properties Bar (Adapts to Active Tool) -->
+    <div id="properties-bar">
+      <!-- Brush/Pencil Specific Props -->
+      <div class="prop-group" id="props-brush">
+        <span class="prop-label">Brush Type:</span>
+        <select class="select-custom" id="prop-brush-type">
+          <option value="solid">Standard Round</option>
+          <option value="soft">Soft Airbrush</option>
+          <option value="marker">Highlighter / Marker</option>
+          <option value="calligraphy">Calligraphy</option>
+          <option value="spray">Spray Paint</option>
+        </select>
+
+        <div class="prop-divider"></div>
+
+        <span class="prop-label">Size:</span>
+        <div class="prop-slider-wrapper">
+          <input type="range" id="prop-size-slider" min="1" max="150" value="12">
+          <span class="prop-val-badge" id="prop-size-val">12px</span>
+        </div>
+
+        <div class="prop-divider"></div>
+
+        <span class="prop-label">Opacity:</span>
+        <div class="prop-slider-wrapper">
+          <input type="range" id="prop-opacity-slider" min="5" max="100" value="100">
+          <span class="prop-val-badge" id="prop-opacity-val">100%</span>
+        </div>
+      </div>
+
+      <!-- Shapes Specific Props -->
+      <div class="prop-group" id="props-shapes" style="display: none;">
+        <span class="prop-label">Shape:</span>
+        <select class="select-custom" id="prop-shape-type">
+          <option value="rect">Rectangle</option>
+          <option value="rounded-rect">Rounded Rectangle</option>
+          <option value="circle">Circle / Ellipse</option>
+          <option value="star">5-Point Star</option>
+          <option value="heart">Heart</option>
+          <option value="arrow">Arrow</option>
+          <option value="polygon">Hexagon</option>
+        </select>
+
+        <div class="prop-divider"></div>
+
+        <span class="prop-label">Mode:</span>
+        <select class="select-custom" id="prop-shape-mode">
+          <option value="outline">Outline Only</option>
+          <option value="fill">Fill Only</option>
+          <option value="both">Outline & Fill</option>
+        </select>
+
+        <div class="prop-divider"></div>
+
+        <span class="prop-label">Border Width:</span>
+        <div class="prop-slider-wrapper">
+          <input type="range" id="prop-shape-border" min="1" max="50" value="4">
+          <span class="prop-val-badge" id="prop-shape-border-val">4px</span>
+        </div>
+      </div>
+
+      <!-- Text Specific Props -->
+      <div class="prop-group" id="props-text" style="display: none;">
+        <span class="prop-label">Font:</span>
+        <select class="select-custom" id="prop-font-family">
+          <option value="Inter, sans-serif">Inter</option>
+          <option value="'JetBrains Mono', monospace">Monospace</option>
+          <option value="Georgia, serif">Georgia</option>
+          <option value="'Impact', sans-serif">Impact</option>
+          <option value="'Comic Sans MS', cursive">Comic Sans</option>
+          <option value="'Arial', sans-serif">Arial</option>
+        </select>
+
+        <span class="prop-label">Size:</span>
+        <div class="prop-slider-wrapper">
+          <input type="range" id="prop-font-size" min="10" max="160" value="36">
+          <span class="prop-val-badge" id="prop-font-size-val">36px</span>
+        </div>
+
+        <button class="icon-btn" id="btn-text-bold" data-tooltip="Bold">
+          <strong style="font-size: 13px;">B</strong>
+        </button>
+        <button class="icon-btn" id="btn-text-italic" data-tooltip="Italic">
+          <em style="font-size: 13px; font-style: italic;">I</em>
+        </button>
+      </div>
+
+      <!-- Selection / Move Specific Props -->
+      <div class="prop-group" id="props-select" style="display: none;">
+        <span class="prop-label">Selected Element:</span>
+        <button class="btn-secondary" id="btn-sel-duplicate">Duplicate</button>
+        <button class="btn-secondary" id="btn-sel-flip-h" data-tooltip="Flip Horizontally">Flip H</button>
+        <button class="btn-secondary" id="btn-sel-flip-v" data-tooltip="Flip Vertically">Flip V</button>
+        <button class="btn-secondary" id="btn-sel-rasterize" data-tooltip="Bake/Merge onto Paint layer">Rasterize</button>
+        <button class="btn-secondary" id="btn-sel-delete" style="color: var(--accent-danger);" data-tooltip="Delete selected element">Delete</button>
+      </div>
+
+      <!-- Eyedropper / Bucket Tolerance -->
+      <div class="prop-group" id="props-bucket" style="display: none;">
+        <span class="prop-label">Fill Tolerance:</span>
+        <div class="prop-slider-wrapper">
+          <input type="range" id="prop-bucket-tolerance" min="0" max="150" value="32">
+          <span class="prop-val-badge" id="prop-bucket-tolerance-val">32</span>
+        </div>
+      </div>
+
+      <!-- Quick Palette Swatches in properties bar -->
+      <div class="prop-group" style="margin-left: auto;">
+        <span class="prop-label">Palette:</span>
+        <div class="color-picker-box" id="quick-swatches-container">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Workspace Container -->
+    <main id="main-workspace">
+      <!-- Left Vertical Tool Rail -->
+      <aside id="left-toolbar">
+        <!-- Select / Move (V) -->
+        <button class="tool-btn active" id="tool-select" data-tool="select" data-tooltip="Select & Move Element (V)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="m13 13 6 6"/></svg>
+          <span class="shortcut-tip">V</span>
+        </button>
+
+        <!-- Brush / Pencil (B) -->
+        <button class="tool-btn" id="tool-brush" data-tool="brush" data-tooltip="Brush & Pencil (B)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m14 12-8.5 8.5a2.12 2.12 0 1 1-3-3L11 9"/><path d="M16 16l6-6"/><path d="m18 8 2-2a2.83 2.83 0 1 0-4-4l-2 2"/></svg>
+          <span class="shortcut-tip">B</span>
+        </button>
+
+        <!-- Eraser (E) -->
+        <button class="tool-btn" id="tool-eraser" data-tool="eraser" data-tooltip="Eraser (E)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/><path d="M22 21H7"/><path d="m5 11 9 9"/></svg>
+          <span class="shortcut-tip">E</span>
+        </button>
+
+        <!-- Line (L) -->
+        <button class="tool-btn" id="tool-line" data-tool="line" data-tooltip="Straight Line (L)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="19" x2="19" y2="5"/></svg>
+          <span class="shortcut-tip">L</span>
+        </button>
+
+        <!-- Shapes (U) -->
+        <button class="tool-btn" id="tool-shapes" data-tool="shapes" data-tooltip="Shapes & Geometry (U)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
+          <span class="shortcut-tip">U</span>
+        </button>
+
+        <!-- Paint Bucket (G) -->
+        <button class="tool-btn" id="tool-bucket" data-tool="bucket" data-tooltip="Paint Bucket / Flood Fill (G)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 11-8-8-8.6 8.6a2 2 0 0 0 0 2.8l5.2 5.2c.8.8 2 .8 2.8 0L19 11Z"/><path d="m5 2 5 5"/><path d="M2 13h15"/><path d="M22 20a2 2 0 1 1-4 0c0-1.6 1.7-2.4 2-4 .3 1.6 2 2.4 2 4Z"/></svg>
+          <span class="shortcut-tip">G</span>
+        </button>
+
+        <!-- Text Tool (T) -->
+        <button class="tool-btn" id="tool-text" data-tool="text" data-tooltip="Text Tool (T)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+          <span class="shortcut-tip">T</span>
+        </button>
+
+        <!-- Eyedropper (I) -->
+        <button class="tool-btn" id="tool-eyedropper" data-tool="eyedropper" data-tooltip="Eyedropper / Color Sampler (I)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 14 4-4"/><path d="m3.3 7 8.7 8.7 4-4L7.3 3a2.5 2.5 0 0 0-3.5 0l-.5.5a2.5 2.5 0 0 0 0 3.5Z"/><path d="m2 22 5.5-1.5L21.3 4.7a1.4 1.4 0 0 0 0-2l-2-2a1.4 1.4 0 0 0-2 0L1.5 16.5 0 22Z"/></svg>
+          <span class="shortcut-tip">I</span>
+        </button>
+
+        <!-- Crop Tool (C) -->
+        <button class="tool-btn" id="tool-crop" data-tool="crop" data-tooltip="Interactive Crop (C)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>
+          <span class="shortcut-tip">C</span>
+        </button>
+
+        <!-- Hand / Pan (H) -->
+        <button class="tool-btn" id="tool-hand" data-tool="hand" data-tooltip="Pan Canvas (H or Spacebar+Drag)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+          <span class="shortcut-tip">H</span>
+        </button>
+
+        <div class="tool-divider"></div>
+
+        <!-- Color Swatch Dual Stack -->
+        <div class="toolbar-color-stack">
+          <div class="color-chip primary" id="color-primary-chip" data-tooltip="Primary Color (Click to change)"></div>
+          <div class="color-chip secondary" id="color-secondary-chip" data-tooltip="Secondary Color"></div>
+          <button class="color-swap-btn" id="btn-swap-colors" data-tooltip="Swap Colors (X)">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></svg>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Center Canvas Artboard Viewport -->
+      <section id="viewport-container">
+        <!-- Canvas Artboard Stage -->
+        <div id="canvas-stage">
+          <!-- Stack of Layer Canvases injected dynamically here -->
+          <div id="layers-render-container"></div>
+
+          <!-- Active Interactive Drawing & Overlay Canvas -->
+          <canvas id="overlay-canvas"></canvas>
+
+          <!-- Interactive Transform Gizmo for Selected Element -->
+          <div id="transform-gizmo">
+            <div class="gizmo-handle handle-tl" data-handle="tl"></div>
+            <div class="gizmo-handle handle-tc" data-handle="tc"></div>
+            <div class="gizmo-handle handle-tr" data-handle="tr"></div>
+            <div class="gizmo-handle handle-ml" data-handle="ml"></div>
+            <div class="gizmo-handle handle-mr" data-handle="mr"></div>
+            <div class="gizmo-handle handle-bl" data-handle="bl"></div>
+            <div class="gizmo-handle handle-bc" data-handle="bc"></div>
+            <div class="gizmo-handle handle-br" data-handle="br"></div>
+            <div class="handle-rot-line"></div>
+            <div class="gizmo-handle handle-rot" data-handle="rot" data-tooltip="Rotate element"></div>
+          </div>
+
+          <!-- Crop Interactive Box -->
+          <div id="crop-overlay">
+            <div class="crop-box" id="crop-box-element">
+              <div class="crop-grid">
+                <div class="crop-grid-cell"></div><div class="crop-grid-cell"></div><div class="crop-grid-cell"></div>
+                <div class="crop-grid-cell"></div><div class="crop-grid-cell"></div><div class="crop-grid-cell"></div>
+                <div class="crop-grid-cell"></div><div class="crop-grid-cell"></div><div class="crop-grid-cell"></div>
+              </div>
+              <div class="crop-handle handle-tl" data-crophandle="tl"></div>
+              <div class="crop-handle handle-tr" data-crophandle="tr"></div>
+              <div class="crop-handle handle-bl" data-crophandle="bl"></div>
+              <div class="crop-handle handle-br" data-crophandle="br"></div>
+              <div class="crop-actions-bar">
+                <button class="btn-primary" id="btn-crop-apply">Apply Crop</button>
+                <button class="btn-secondary" id="btn-crop-cancel">Cancel</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Inline Textarea for Text Placement -->
+          <textarea id="text-inline-editor" spellcheck="false"></textarea>
+        </div>
+
+        <!-- Floating Zoom Controls in Canvas -->
+        <div class="canvas-floating-controls">
+          <button class="icon-btn" id="btn-zoom-out" data-tooltip="Zoom Out (-)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+          </button>
+          <span class="zoom-text" id="zoom-percentage-text" data-tooltip="Click to reset to 100%">100%</span>
+          <button class="icon-btn" id="btn-zoom-in" data-tooltip="Zoom In (+)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+          </button>
+          <button class="icon-btn" id="btn-zoom-fit" data-tooltip="Fit to Screen (Ctrl+0)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- Right Collapsible Sidebar (Layers, Filters, Stickers, History) -->
+      <aside id="right-sidebar">
+        <!-- Sidebar Navigation Tabs -->
+        <div class="sidebar-tabs">
+          <button class="sidebar-tab-btn active" data-tab="tab-layers">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            Layers
+          </button>
+          <button class="sidebar-tab-btn" data-tab="tab-filters">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/></svg>
+            Filters
+          </button>
+          <button class="sidebar-tab-btn" data-tab="tab-stickers">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+            Stickers
+          </button>
+          <button class="sidebar-tab-btn" data-tab="tab-history">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+            History
+          </button>
+        </div>
+
+        <!-- Sidebar Content Body -->
+        <div class="sidebar-content">
+          <!-- TAB 1: LAYERS -->
+          <div class="tab-pane active" id="tab-layers">
+            <div class="panel-section-title">
+              <span>Layers Stack</span>
+              <div class="layers-header-actions">
+                <button class="icon-btn" id="btn-layer-add" data-tooltip="New Paint Layer">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+                <button class="icon-btn" id="btn-layer-duplicate" data-tooltip="Duplicate Layer">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                </button>
+                <button class="icon-btn" id="btn-layer-merge" data-tooltip="Merge Down">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 15 5 5 5-5"/><path d="M12 4v16"/></svg>
+                </button>
+                <button class="icon-btn" id="btn-layer-delete" data-tooltip="Delete Layer">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Active Layer Blend & Opacity -->
+            <div class="layer-props-box">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span class="prop-label">Opacity:</span>
+                <span class="prop-val-badge" id="layer-opacity-badge">100%</span>
+              </div>
+              <input type="range" id="layer-opacity-slider" min="0" max="100" value="100">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                <span class="prop-label">Blend Mode:</span>
+                <select class="select-custom" id="layer-blend-mode">
+                  <option value="source-over">Normal</option>
+                  <option value="multiply">Multiply</option>
+                  <option value="screen">Screen</option>
+                  <option value="overlay">Overlay</option>
+                  <option value="darken">Darken</option>
+                  <option value="lighten">Lighten</option>
+                  <option value="color-dodge">Color Dodge</option>
+                  <option value="difference">Difference</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Layers Stack Items List -->
+            <div class="layers-list" id="layers-list-container">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- TAB 2: ADJUSTMENTS & FILTERS -->
+          <div class="tab-pane" id="tab-filters">
+            <div class="panel-section-title">
+              <span>Color & Filter Adjustments</span>
+              <button class="btn-secondary" id="btn-reset-filters" style="font-size: 11px; padding: 2px 8px;">Reset</button>
+            </div>
+
+            <!-- Filter Sliders -->
+            <div class="filter-slider-row">
+              <div class="filter-slider-head">
+                <span>Brightness</span>
+                <span class="filter-slider-val" id="filter-val-brightness">100%</span>
+              </div>
+              <input type="range" id="filter-brightness" min="0" max="200" value="100">
+            </div>
+
+            <div class="filter-slider-row">
+              <div class="filter-slider-head">
+                <span>Contrast</span>
+                <span class="filter-slider-val" id="filter-val-contrast">100%</span>
+              </div>
+              <input type="range" id="filter-contrast" min="0" max="200" value="100">
+            </div>
+
+            <div class="filter-slider-row">
+              <div class="filter-slider-head">
+                <span>Saturation</span>
+                <span class="filter-slider-val" id="filter-val-saturation">100%</span>
+              </div>
+              <input type="range" id="filter-saturation" min="0" max="200" value="100">
+            </div>
+
+            <div class="filter-slider-row">
+              <div class="filter-slider-head">
+                <span>Blur</span>
+                <span class="filter-slider-val" id="filter-val-blur">0px</span>
+              </div>
+              <input type="range" id="filter-blur" min="0" max="25" value="0">
+            </div>
+
+            <div class="filter-slider-row">
+              <div class="filter-slider-head">
+                <span>Grayscale</span>
+                <span class="filter-slider-val" id="filter-val-grayscale">0%</span>
+              </div>
+              <input type="range" id="filter-grayscale" min="0" max="100" value="0">
+            </div>
+
+            <div class="filter-slider-row">
+              <div class="filter-slider-head">
+                <span>Sepia</span>
+                <span class="filter-slider-val" id="filter-val-sepia">0%</span>
+              </div>
+              <input type="range" id="filter-sepia" min="0" max="100" value="0">
+            </div>
+
+            <div class="filter-slider-row">
+              <div class="filter-slider-head">
+                <span>Invert Colors</span>
+                <span class="filter-slider-val" id="filter-val-invert">0%</span>
+              </div>
+              <input type="range" id="filter-invert" min="0" max="100" value="0">
+            </div>
+
+            <div class="filter-slider-row">
+              <div class="filter-slider-head">
+                <span>Sharpen (Convolution)</span>
+                <span class="filter-slider-val" id="filter-val-sharpen">0%</span>
+              </div>
+              <input type="range" id="filter-sharpen" min="0" max="100" value="0">
+            </div>
+
+            <div class="panel-section-title" style="margin-top: 10px;">
+              <span>1-Click Presets</span>
+            </div>
+            <div class="presets-grid">
+              <button class="preset-chip" data-preset="normal">Original</button>
+              <button class="preset-chip" data-preset="vivid">Vivid Pop</button>
+              <button class="preset-chip" data-preset="warm">Golden Hour</button>
+              <button class="preset-chip" data-preset="cool">Cool Nordic</button>
+              <button class="preset-chip" data-preset="vintage">Retro 70s</button>
+              <button class="preset-chip" data-preset="noir">B&W Noir</button>
+              <button class="preset-chip" data-preset="cyberpunk">Cyberpunk</button>
+              <button class="preset-chip" data-preset="dramatic">Dramatic</button>
+              <button class="preset-chip" data-preset="crisp">Ultra Sharp</button>
+            </div>
+          </div>
+
+          <!-- TAB 3: STICKERS & SHAPES -->
+          <div class="tab-pane" id="tab-stickers">
+            <div class="panel-section-title">
+              <span>Stickers & Elements</span>
+            </div>
+            <div class="stickers-categories">
+              <button class="category-pill active" data-category="emojis">Emojis</button>
+              <button class="category-pill" data-category="badges">Badges</button>
+              <button class="category-pill" data-category="arrows">Arrows</button>
+              <button class="category-pill" data-category="shapes">Shapes</button>
+              <button class="category-pill" data-category="decorative">Decorative</button>
+            </div>
+            <div class="stickers-grid" id="stickers-grid-container">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- TAB 4: HISTORY -->
+          <div class="tab-pane" id="tab-history">
+            <div class="panel-section-title">
+              <span>History Timeline</span>
+            </div>
+            <div class="history-list" id="history-items-container">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Bottom Status Bar -->
+    <footer id="status-bar">
+      <div class="status-left">
+        <div class="status-indicator">
+          <span class="status-dot"></span>
+          <span id="status-canvas-size">1280 × 720 px</span>
+        </div>
+        <span id="status-cursor-coords">X: 0 px, Y: 0 px</span>
+      </div>
+      <div class="status-right">
+        <span id="status-active-layer">Active: Layer 1</span>
+        <span id="status-tool-hint">Select & Move Tool (V) — Click an object to select & transform</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Hidden Native File Inputs -->
+  <input type="file" id="file-uploader" accept="image/png, image/jpeg, image/webp" multiple style="display: none;">
+  <input type="color" id="native-color-picker" style="display: none;">
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- ==========================================================================
+       MODALS
+       ========================================================================== -->
+
+  <!-- Modal: New Canvas -->
+  <div class="modal-backdrop" id="modal-new-canvas">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Create New Canvas</h3>
+        <button class="modal-close-btn" data-modal="modal-new-canvas">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Presets</label>
+          <select class="form-control" id="new-preset-select">
+            <option value="1280x720">HD 720p (1280 × 720)</option>
+            <option value="1920x1080">Full HD 1080p (1920 × 1080)</option>
+            <option value="1080x1080">Square / Instagram (1080 × 1080)</option>
+            <option value="1200x630">Social Share Card (1200 × 630)</option>
+            <option value="800x600">MS Paint Classic (800 × 600)</option>
+            <option value="custom">Custom Dimensions</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="flex: 1;">
+            <label class="form-label">Width (px)</label>
+            <input type="number" id="new-width-input" class="form-control" value="1280" min="50" max="8000">
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label class="form-label">Height (px)</label>
+            <input type="number" id="new-height-input" class="form-control" value="720" min="50" max="8000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Canvas Background</label>
+          <select class="form-control" id="new-bg-type">
+            <option value="#ffffff">White</option>
+            <option value="transparent">Transparent (Checkerboard)</option>
+            <option value="#121316">Dark Charcoal</option>
+            <option value="custom">Custom Color...</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-modal="modal-new-canvas">Cancel</button>
+        <button class="btn-primary" id="btn-create-canvas-confirm">Create Canvas</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Resize Canvas -->
+  <div class="modal-backdrop" id="modal-resize">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Resize Canvas</h3>
+        <button class="modal-close-btn" data-modal="modal-resize">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group" style="flex: 1;">
+            <label class="form-label">Width (px)</label>
+            <input type="number" id="resize-width-input" class="form-control" value="1280">
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label class="form-label">Height (px)</label>
+            <input type="number" id="resize-height-input" class="form-control" value="720">
+          </div>
+        </div>
+        <div class="form-group">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
+            <input type="checkbox" id="resize-maintain-aspect" checked>
+            Maintain Aspect Ratio
+          </label>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Resizing Mode</label>
+          <select class="form-control" id="resize-mode-select">
+            <option value="scale">Scale & Resample Existing Artwork</option>
+            <option value="canvas">Expand / Trim Canvas Dimensions Only</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-modal="modal-resize">Cancel</button>
+        <button class="btn-primary" id="btn-resize-confirm">Apply Resize</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Export Artwork -->
+  <div class="modal-backdrop" id="modal-export">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Export Artwork</h3>
+        <button class="modal-close-btn" data-modal="modal-export">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Format</label>
+          <select class="form-control" id="export-format-select">
+            <option value="image/png">PNG (.png) - Highest Quality & Transparency</option>
+            <option value="image/jpeg">JPEG (.jpg) - Compressed & Small File Size</option>
+            <option value="image/webp">WebP (.webp) - Modern High Efficiency</option>
+          </select>
+        </div>
+        <div class="form-group" id="export-quality-group" style="display: none;">
+          <div style="display: flex; justify-content: space-between;">
+            <label class="form-label">Quality</label>
+            <span class="prop-val-badge" id="export-quality-val">92%</span>
+          </div>
+          <input type="range" id="export-quality-slider" min="20" max="100" value="92">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Resolution Scale</label>
+          <select class="form-control" id="export-scale-select">
+            <option value="1">1x (Original Size)</option>
+            <option value="1.5">1.5x HD</option>
+            <option value="2">2x Retina</option>
+            <option value="0.5">0.5x Half Size</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="btn-export-copy">Copy to Clipboard</button>
+        <button class="btn-primary" id="btn-export-download">Download Image</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Keyboard Shortcuts -->
+  <div class="modal-backdrop" id="modal-shortcuts">
+    <div class="modal-card" style="width: 500px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Keyboard Shortcuts</h3>
+        <button class="modal-close-btn" data-modal="modal-shortcuts">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body" style="gap: 8px;">
+        <div class="dropdown-item" style="cursor: default;">
+          <span>Select & Move Tool</span>
+          <kbd class="item-shortcut">V</kbd>
+        </div>
+        <div class="dropdown-item" style="cursor: default;">
+          <span>Brush / Pencil</span>
+          <kbd class="item-shortcut">B</kbd>
+        </div>
+        <div class="dropdown-item" style="cursor: default;">
+          <span>Eraser</span>
+          <kbd class="item-shortcut">E</kbd>
+        </div>
+        <div class="dropdown-item" style="cursor: default;">
+          <span>Line Tool</span>
+          <kbd class="item-shortcut">L</kbd>
+        </div>
+        <div class="dropdown-item" style="cursor: default;">
+          <span>Shapes Tool</span>
+          <kbd class="item-shortcut">U</kbd>
+        </div>
+        <div class="dropdown-item" style="cursor: default;">
+          <span>Paint Bucket</span>
+          <kbd class="item-shortcut">G</kbd>
+        </div>
+        <div class="dropdown-item" style="cursor: default;">
+          <span>Text Tool</span>
+          <kbd class="item-shortcut">T</kbd>
+        </div>
+        <div class="dropdown-item" style="cursor: default;">
+          <span>Eyedropper</span>
+          <kbd class="item-shortcut">I</kbd>
+        </div>
+        <div class="dropdown-item" style="cursor: default;">
+          <span>Crop Canvas</span>
+          <kbd class="item-shortcut">C</kbd>
+        </div>
+        <div class="dropdown-item" style="cursor: default;">
+          <span>Pan Canvas</span>
+          <kbd class="item-shortcut">H or Space+Drag</kbd>
+        </div>
+        <div class="dropdown-item" style="cursor: default;">
+          <span>Swap Colors</span>
+          <kbd class="item-shortcut">X</kbd>
+        </div>
+        <div class="dropdown-item" style="cursor: default;">
+          <span>Brush Size Adjust</span>
+          <kbd class="item-shortcut">[ and ]</kbd>
+        </div>
+        <div class="dropdown-item" style="cursor: default;">
+          <span>Undo / Redo</span>
+          <kbd class="item-shortcut">Ctrl+Z / Ctrl+Y</kbd>
+        </div>
+        <div class="dropdown-item" style="cursor: default;">
+          <span>Delete Selection</span>
+          <kbd class="item-shortcut">Delete / Backspace</kbd>
+        </div>
+        <div class="dropdown-item" style="cursor: default;">
+          <span>Duplicate Selection</span>
+          <kbd class="item-shortcut">Ctrl+D</kbd>
+        </div>
+        <div class="dropdown-item" style="cursor: default;">
+          <span>Fit to Screen / 100%</span>
+          <kbd class="item-shortcut">Ctrl+0 / Ctrl+1</kbd>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" data-modal="modal-shortcuts">Got It</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/stickers.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/layers.js"></script>
+  <script src="js/canvas.js"></script>
+  <script src="js/tools.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
